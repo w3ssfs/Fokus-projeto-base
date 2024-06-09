@@ -14,26 +14,31 @@ const doneAudio = new Audio("/sons/beep.mp3");
 const startPause = document.querySelector("#start-pause");
 const iniciarOuPausar = document.querySelector("#start-pause span");
 const imgPause = document.querySelector(".app__card-primary-butto-icon");
+const timer = document.querySelector("#timer");
 
-let tempoDecorridoSegundos = 5;
+let tempoDecorridoSegundos = 1500;
 let intervaloID = null;
 
 focoBt.addEventListener("click", () => {
+  tempoDecorridoSegundos = 1500;
   alterarContexto("foco");
   focoBt.classList.add("active");
 });
 
 curtoBt.addEventListener("click", () => {
+  tempoDecorridoSegundos = 300;
   alterarContexto("descanso-curto");
   curtoBt.classList.add("active");
 });
 
 longoBt.addEventListener("click", () => {
+  tempoDecorridoSegundos = 900;
   alterarContexto("descanso-longo");
   longoBt.classList.add("active");
 });
 
 function alterarContexto(contexto) {
+  tempoNaTela();
   html.setAttribute("data-contexto", contexto);
   banner.setAttribute("src", `/imagens/${contexto}.png`);
   btns.forEach(function (contexto) {
@@ -74,7 +79,7 @@ const contagemRegressiva = () => {
     return;
   }
   tempoDecorridoSegundos -= 1;
-  console.log("temporizador: " + tempoDecorridoSegundos);
+  tempoNaTela();
 };
 
 startPause.addEventListener("click", iniciar);
@@ -96,3 +101,14 @@ function zerar() {
   iniciarOuPausar.textContent = "começar";
   intervaloID = null;
 }
+
+function tempoNaTela() {
+  const tempo = new Date(tempoDecorridoSegundos * 1000);
+  const tempoFormatado = tempo.toLocaleTimeString("pt-br", {
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  timer.innerHTML = `${tempoFormatado}`;
+}
+tempoNaTela();
