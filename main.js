@@ -16,7 +16,7 @@ const iniciarOuPausar = document.querySelector("#start-pause span");
 const imgPause = document.querySelector(".app__card-primary-butto-icon");
 const timer = document.querySelector("#timer");
 
-let tempoDecorridoSegundos = 1500;
+let tempoDecorridoSegundos = 5;
 let intervaloID = null;
 
 focoBt.addEventListener("click", () => {
@@ -75,6 +75,12 @@ musicaInput.addEventListener("change", () => {
 const contagemRegressiva = () => {
   if (tempoDecorridoSegundos <= 0) {
     doneAudio.play();
+    alert("Contagem Finalizada");
+    const focoAtivo = html.getAttribute("data-context") == "foco";
+    if (focoAtivo) {
+      const evento = new CustomEvent("focoFinalizado");
+      document.dispatchEvent = evento;
+    }
     zerar();
     return;
   }
